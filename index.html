@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>João Silva - Desenvolvedor</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            /* Tema Claro - Azul elegante com cinzas suaves */
+            --primary-color: #2563eb;
+            --primary-hover: #1d4ed8;
+            --secondary-color: #1e293b;
+            --text-color: #1e293b;
+            --text-secondary: #475569;
+            --text-muted: #64748b;
+            --background-gradient: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            --card-background: #ffffff;
+            --section-background: #f8fafc;
+            --border-color: #e2e8f0;
+            --header-gradient: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            --shadow: 0 20px 60px rgba(0,0,0,0.08);
+        }
+
+        [data-theme="dark"] {
+            /* Tema Escuro - Preto com verde neon */
+            --primary-color: #10b981;
+            --primary-hover: #059669;
+            --secondary-color: #f3f4f6;
+            --text-color: #f9fafb;
+            --text-secondary: #d1d5db;
+            --text-muted: #9ca3af;
+            --background-gradient: linear-gradient(135deg, #000000 0%, #111827 100%);
+            --card-background: #111827;
+            --section-background: #1f2937;
+            --border-color: #374151;
+            --header-gradient: linear-gradient(135deg, #000000 0%, #1f2937 100%);
+            --shadow: 0 20px 60px rgba(0,0,0,0.4);
+        }
+
+        /* Aplica tema escuro automaticamente se for preferência do sistema */
+        @media (prefers-color-scheme: dark) {
+            :root:not([data-theme]) {
+                --primary-color: #10b981;
+                --primary-hover: #059669;
+                --secondary-color: #f3f4f6;
+                --text-color: #f9fafb;
+                --text-secondary: #d1d5db;
+                --text-muted: #9ca3af;
+                --background-gradient: linear-gradient(135deg, #000000 0%, #111827 100%);
+                --card-background: #111827;
+                --section-background: #1f2937;
+                --border-color: #374151;
+                --header-gradient: linear-gradient(135deg, #000000 0%, #1f2937 100%);
+                --shadow: 0 20px 60px rgba(0,0,0,0.4);
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background: var(--background-gradient);
+            min-height: 100vh;
+            transition: all 0.4s ease;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--card-background);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            border-radius: 20px;
+            overflow: hidden;
+            margin-top: 40px;
+            margin-bottom: 40px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--card-background);
+            box-shadow: var(--shadow);
+            border-radius: 20px;
+            overflow: hidden;
+            margin-top: 40px;
+            margin-bottom: 40px;
+            position: relative;
+            transition: all 0.4s ease;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            width: 60px;
+            height: 32px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding: 2px;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .theme-slider {
+            width: 28px;
+            height: 28px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            position: absolute;
+            transition: all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .theme-toggle.dark .theme-slider {
+            transform: translateX(28px);
+            background: #1f2937;
+            color: var(--primary-color);
+        }
+
+        .theme-icon {
+            font-size: 14px;
+            color: #64748b;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle.dark .theme-icon {
+            color: var(--primary-color);
+        }
+
+        .header {
+            background: var(--header-gradient);
+            color: white;
+            padding: 60px 40px 40px;
+            text-align: center;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: var(--section-background);
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: var(--secondary-color);
+            border: 4px solid rgba(255,255,255,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .name {
+            font-size: 2.5em;
+            font-weight: 300;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .title {
+            font-size: 1.2em;
+            opacity: 0.9;
+            font-weight: 300;
+            margin-bottom: 30px;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover {
+            color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .content {
+            padding: 50px 40px;
+            background: var(--card-background);
+            transition: all 0.4s ease;
+        }
+
+        .section {
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            color: var(--text-color);
+            margin-bottom: 25px;
+            position: relative;
+            font-weight: 300;
+            transition: all 0.4s ease;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -8px;
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+            border-radius: 2px;
+        }
+
+        .about-text {
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            text-align: justify;
+            transition: all 0.4s ease;
+        }
+
+        .experience-item {
+            margin-bottom: 30px;
+            padding-left: 25px;
+            border-left: 2px solid var(--border-color);
+            position: relative;
+            transition: all 0.4s ease;
+        }
+
+        .experience-item::before {
+            content: '';
+            position: absolute;
+            left: -6px;
+            top: 5px;
+            width: 10px;
+            height: 10px;
+            background: var(--primary-color);
+            border-radius: 50%;
+        }
+
+        .job-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 5px;
+            transition: all 0.4s ease;
+        }
+
+        .company {
+            color: var(--primary-color);
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .period {
+            color: var(--text-muted);
+            font-size: 0.9em;
+            margin-bottom: 15px;
+            transition: all 0.4s ease;
+        }
+
+        .job-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            transition: all 0.4s ease;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .skill-category {
+            background: var(--section-background);
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid var(--border-color);
+            transition: all 0.4s ease;
+        }
+
+        .skill-category h4 {
+            color: var(--text-color);
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            transition: all 0.4s ease;
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .skill-tag {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .skill-tag:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .education-item {
+            background: var(--section-background);
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 4px solid var(--primary-color);
+            transition: all 0.4s ease;
+        }
+
+        .degree {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 8px;
+            transition: all 0.4s ease;
+        }
+
+        .institution {
+            color: var(--primary-color);
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .year {
+            color: var(--text-muted);
+            font-size: 0.9em;
+            transition: all 0.4s ease;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 20px;
+                border-radius: 15px;
+            }
+            
+            .header {
+                padding: 40px 20px 30px;
+            }
+            
+            .content {
+                padding: 30px 20px;
+            }
+            
+            .contact-info {
+                gap: 15px;
+            }
+            
+            .contact-item {
+                font-size: 0.9em;
+            }
+            
+            .name {
+                font-size: 2em;
+            }
+            
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.8s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container fade-in">
+        <div class="theme-toggle" onclick="toggleTheme()">
+            <div class="theme-slider">
+                <i class="fas fa-sun theme-icon"></i>
+            </div>
+        </div>
+        <header class="header">
+            <div class="profile-img">
+                <i class="fas fa-user"></i>
+            </div>
+            <h1 class="name">Daniel Cruz</h1>
+            <p class="title">QA Engineer</p>
+            <div class="contact-info">
+                <a href="mailto:danielcruz906@gmail.com" class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    email
+                </a>
+                <a href="tel:+5511999999999" class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    (11) 99999-9999
+                </a>
+                <a href="https://linkedin.com/in/" class="contact-item">
+                    <i class="fab fa-linkedin"></i>
+                    LinkedIn
+                </a>
+                <a href="https://github.com/joaosilva" class="contact-item">
+                    <i class="fab fa-github"></i>
+                    GitHub
+                </a>
+            </div>
+        </header>
+
+        <div class="content">
+            <section class="section">
+                <h2 class="section-title">Sobre</h2>
+                <p class="about-text">
+                    Sed eget nisl dictum tellus gravida ullamcorper id a nisi. Sed suscipit, elit vitae luctus dictum, ipsum felis sagittis quam, molestie luctus diam massa nec mi. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nam cursus metus lobortis urna luctus, non sagittis turpis vehicula. Fusce suscipit justo ex, dictum convallis nibh mattis eget. Donec varius varius eros, tincidunt porttitor enim tristique a. Integer pretium odio et turpis sollicitudin finibus.
+                </p>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title">Experiência</h2>
+                
+                <div class="experience-item">
+                    <h3 class="job-title">Desenvolvedor Full Stack</h3>
+                    <p class="company">Tech Solutions Ltda</p>
+                    <p class="period">Janeiro 2022 - Presente</p>
+                    <p class="job-description">
+                        Desenvolvimento de aplicações web utilizando React, Node.js e PostgreSQL. 
+                        Responsável pela arquitetura e implementação de APIs RESTful, otimização 
+                        de performance e integração com serviços externos.
+                    </p>
+                </div>
+
+                <div class="experience-item">
+                    <h3 class="job-title">Desenvolvedor Frontend</h3>
+                    <p class="company">Digital Agency</p>
+                    <p class="period">Junho 2020 - Dezembro 2021</p>
+                    <p class="job-description">
+                        Criação de interfaces responsivas e interativas usando HTML5, CSS3, JavaScript 
+                        e frameworks modernos. Colaboração próxima com designers para implementar 
+                        experiências de usuário excepcionais.
+                    </p>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title">Habilidades</h2>
+                <div class="skills-grid">
+                    <div class="skill-category">
+                        <h4>Frontend</h4>
+                        <div class="skill-tags">
+                            <span class="skill-tag">React</span>
+                            <span class="skill-tag">Vue.js</span>
+                            <span class="skill-tag">JavaScript</span>
+                            <span class="skill-tag">TypeScript</span>
+                            <span class="skill-tag">HTML5</span>
+                            <span class="skill-tag">CSS3</span>
+                        </div>
+                    </div>
+                    
+                    <div class="skill-category">
+                        <h4>Backend</h4>
+                        <div class="skill-tags">
+                            <span class="skill-tag">Node.js</span>
+                            <span class="skill-tag">Python</span>
+                            <span class="skill-tag">Express</span>
+                            <span class="skill-tag">API REST</span>
+                            <span class="skill-tag">MongoDB</span>
+                            <span class="skill-tag">PostgreSQL</span>
+                        </div>
+                    </div>
+                    
+                    <div class="skill-category">
+                        <h4>Ferramentas</h4>
+                        <div class="skill-tags">
+                            <span class="skill-tag">Git</span>
+                            <span class="skill-tag">Docker</span>
+                            <span class="skill-tag">AWS</span>
+                            <span class="skill-tag">Figma</span>
+                            <span class="skill-tag">Postman</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title">Formação</h2>
+                <div class="education-item">
+                    <h3 class="degree">Análise e Desenvolvimento de Sistemas</h3>
+                    <p class="institution">Universidade Tecnológica Federal</p>
+                    <p class="year">2018 - 2021</p>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        // Detecta preferência do sistema e aplica automaticamente
+        function getSystemTheme() {
+            return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        
+        // Verifica se há tema salvo, senão usa preferência do sistema
+        let currentTheme = localStorage.getItem('theme') || getSystemTheme();
+        
+        function initTheme() {
+            applyTheme(currentTheme);
+            updateToggleUI();
+        }
+        
+        function toggleTheme() {
+            currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+            localStorage.setItem('theme', currentTheme);
+            applyTheme(currentTheme);
+            updateToggleUI();
+        }
+        
+        function applyTheme(theme) {
+            if (theme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+            }
+        }
+        
+        function updateToggleUI() {
+            const toggle = document.querySelector('.theme-toggle');
+            const icon = document.querySelector('.theme-icon');
+            
+            if (currentTheme === 'dark') {
+                toggle.classList.add('dark');
+                icon.className = 'fas fa-moon theme-icon';
+            } else {
+                toggle.classList.remove('dark');
+                icon.className = 'fas fa-sun theme-icon';
+            }
+        }
+        
+        // Escuta mudanças na preferência do sistema (apenas se não tiver tema salvo)
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+            if (!localStorage.getItem('theme')) {
+                currentTheme = e.matches ? 'dark' : 'light';
+                applyTheme(currentTheme);
+                updateToggleUI();
+            }
+        });
+        
+        // Inicializa o tema imediatamente (antes mesmo do DOMContentLoaded)
+        initTheme();
+        
+        // Garante que o tema seja aplicado quando a página carrega
+        document.addEventListener('DOMContentLoaded', function() {
+            initTheme();
+        });
+    </script>
+</body>
+</html>
